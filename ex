@@ -1,11 +1,15 @@
-RED="x1b[31;1m";
-GREEN="x1b[32;1m";
-NC="x1b[0m";
+#!/usr/bin/env bash
 
-function ex () {
+RED="\x1b[31;1m";
+GREEN="\x1b[32;1m";
+NC="\x1b[0m";
+
+outDirs=()
+inFiles=()
+
+ex() {
     local file="$1"
-    local base=$(basename "$file")
-    local dirname="''${base%%.*}"
+    local dirname="$2"
     if [ ! -f "$file" ]; then
         printf "${RED}[ERROR]${NC} File '$file' does not exist\n"
         exit 1
@@ -33,7 +37,39 @@ function ex () {
     esac
     printf "${GREEN}[INFO]${NC} Extracted '$file' into '$dirname'\n"
 }
+parseArgs() {
+    local requiredArgFlag=""
+    for arg in "$@"; do
+        case "$arg" in
+            -o=*|--out=*)
+                outDirs[-1]="${arg#*=}"
+                ;;
+            -o|--out)
+                requiredArgFlag="$arg"
+                ;;
+            *)
+                if [[ "$requiredArgFlag" != "" ]]; then
+                    outDirs[-1]="$arg"
+                    requiredArgFlag=""
+                else
+                    local base=$(basename "$arg")
+                    outDirs+=("${base%%.*}")
+                    inFiles+=("$arg")
+                fi
+                ;;
+        esac
+    done
+    if [[ "$requiredArgFlag" != "" ]]; then
+        printf "${RED}[ERROR]${NC} Option '$requiredArgFlag' requires an argument <outdir>\n"
+        exit 1
+    fi
+}
 
-for file in "$@"; do
-    ex "$file"
-done
+main() {
+    parseArgs "$@"
+    for i in "${!inFiles[@]}"; do
+        ex "${inFiles[$i]}" "${outDirs[$i]}"
+    done
+}
+
+main "$@"
