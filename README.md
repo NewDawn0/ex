@@ -16,3 +16,25 @@ To extract an archive using [**EX**]tract, simply invoke the command `ex <file(s
 - [gzip](https://www.gnu.org/software/gzip/)
 - [p7zip](https://github.com/p7zip-project/p7zip)
 - [zstd](https://facebook.github.io/zstd/)
+
+## Installation
+
+### Manually
+
+1. Install the dependencies
+2. Install the ex utility
+
+```bash
+git clone https://github.com/NewDawn0/ex
+sudo cp ex/ex /usr/local/bin
+```
+
+### Using nix
+
+Install the package by adding it to your config:
+
+```nix
+environment.systemPackages = [ pkgs.ex ];
+# OR
+home.packages = [ pkgs.ex ];
+```
