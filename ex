@@ -24,19 +24,19 @@ ex() {
     fi
     mkdir -p "$outdir"
     case $1 in
-        *.tar.bz2)   tar xjf    "$1" -C "$outdir"    ;;
-        *.tar.gz)    tar xzf    "$1" -C "$outdir"    ;;
-        *.bz2)       bunzip2    "$1" -C "$outdir"    ;;
-        *.rar)       unrar x    "$1" -C "$outdir"    ;;
-        *.gz)        gunzip     "$1" -C "$outdir"    ;;
-        *.tar)       tar xf     "$1" -C "$outdir"    ;;
-        *.tbz2)      tar xjf    "$1" -C "$outdir"    ;;
-        *.tgz)       tar xzf    "$1" -C "$outdir"    ;;
-        *.zip)       unzip      "$1" -d "$outdir"    ;;
-        *.Z)         uncompress "$1" -C "$outdir"    ;;
-        *.7z)        7z x       "$1" -o "$outdir"    ;;
-        *.tar.xz)    tar xf     "$1" -C "$outdir"    ;;
-        *.tar.zst)   unzstd     "$1" -o "$outdir"    ;;
+        *.tar.bz2)   tar xjf        "$1" -C "$outdir"                       ;;
+        *.tar.gz)    tar xzf        "$1" -C "$outdir"                       ;;
+        *.tar.xz)    tar xf         "$1" -C "$outdir"                       ;;
+        *.7z)        7z x           "$1"  "-o$outdir"                       ;;
+        *.Z)         uncompress -c  "$1" > "$outdir/$(basename "$1" .Z)"    ;;
+        *.bz2)       bunzip2        "$1" > "$outdir/$(basename "$1" .bz2)"  ;;
+        *.gz)        gzip -cdk      "$1" > "$outdir/$(basename "$1" .gz)"   ;;
+        *.rar)       bsdtar -xf     "$1" -C "$outdir"                       ;;
+        *.tar)       tar xf         "$1" -C "$outdir"                       ;;
+        *.tbz2)      tar xjf        "$1" -C "$outdir"                       ;;
+        *.tgz)       tar xzf        "$1" -C "$outdir"                       ;;
+        *.zip)       unzip          "$1" -d "$outdir"                       ;;
+        *.zst)       unzstd         "$1" -o "$outdir/$(basename "$1" .zst)" ;;
         *)           printf "${RED}[ERROR]${NC} File '$1' has an unsupported filetype\n" && exit 1 ;;
     esac
     printf "${GREEN}[INFO]${NC} Extracted '$file' into '$outdir'\n"

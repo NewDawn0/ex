@@ -22,11 +22,10 @@
             inherit src;
             phases = [ "buildPhase" "installPhase" ];
             propagatedBuildInputs = with pkgs; [
-              bzip2
               gnutar
               gzip
+              libarchive
               p7zip
-              unrar
               unzip
               zstd
             ];
