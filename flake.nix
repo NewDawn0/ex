@@ -20,7 +20,6 @@
             pname = "ex";
             version = "1.0.0";
             inherit src;
-            phases = [ "buildPhase" "installPhase" ];
             propagatedBuildInputs = with pkgs; [
               gnutar
               gzip
@@ -29,16 +28,18 @@
               unzip
               zstd
             ];
-            installPhase = ''
-              mkdir -p "$out/bin";
-              install -m755 ${src} $out/bin/ex
-            '';
-            meta = with pkgs.lib; {
+            installPhase = "install -D -m 755 ${src}/ex -t $out/bin";
+            meta = {
               description =
-                "A wrapper around extracting common archive formats";
+                "A command-line wrapper for extracting common archive formats";
+              longDescription = ''
+                This tool wraps around popular archive extraction commands, providing a simple interface to extract files from formats like ZIP, TAR, and more.
+                It streamlines file extraction for most pouplar archive formats.
+              '';
               homepage = "https://github.com/NewDawn0/ex";
-              license = licenses.mit;
-              maintainers = [ NewDawn0 ];
+              license = pkgs.lib.licenses.mit;
+              maintainers = with pkgs.lib.maintainers; [ NewDawn0 ];
+              platforms = pkgs.lib.platforms.all;
             };
           };
         });
