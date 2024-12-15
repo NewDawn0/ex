@@ -14,7 +14,7 @@
       packages = eachSystem (system:
         let
           pkgs = mkPkgs system;
-          src = ./ex;
+          src = ./.;
         in {
           default = pkgs.stdenv.mkDerivation {
             pname = "ex";
