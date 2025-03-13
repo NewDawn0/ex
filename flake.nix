@@ -1,5 +1,5 @@
 {
-  description = "Your awesome flake";
+  description = "Command-line wrapper to extract common archive formats";
 
   inputs.utils.url = "github:NewDawn0/nixUtils";
 
