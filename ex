@@ -71,6 +71,10 @@ parseArgs() {
 
 main() {
     parseArgs "$@"
+    if [ ${#inFiles[@]} -eq 0 ]; then
+        printf "${RED}[ERROR]${NC} No file provided. Please provide at least one file.\n"
+        exit 1
+    fi
     for i in "${!inFiles[@]}"; do
         ex "${inFiles[$i]}" "${outDirs[$i]}"
     done
